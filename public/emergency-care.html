@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Assistance - HospitalCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --emergency-red: #e63946;
+            --dark-blue: #1d3557;
+            --light: #f1faee;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .emergency-header {
+            background-color: var(--emergency-red);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .emergency-header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .emergency-container {
+            max-width: 800px;
+            margin: 5rem auto 2rem;
+            padding: 1rem;
+        }
+        
+        .emergency-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--emergency-red);
+        }
+        
+        .emergency-card h2 {
+            color: var(--emergency-red);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .emergency-list {
+            list-style: none;
+        }
+        
+        .emergency-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .emergency-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .emergency-list i {
+            color: var(--emergency-red);
+            margin-right: 1rem;
+            width: 25px;
+            text-align: center;
+        }
+        
+        .call-button {
+            display: block;
+            background-color: var(--emergency-red);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .call-button:hover {
+            background-color: #d62839;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(230, 57, 70, 0.6);
+        }
+        
+        .call-button i {
+            margin-right: 10px;
+        }
+        
+        .floating-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--emergency-red);
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 20px rgba(230, 57, 70, 0.6);
+            z-index: 99;
+            animation: pulse 1.5s infinite;
+            text-decoration: none;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(230, 57, 70, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(230, 57, 70, 0);
+            }
+        }
+        
+        .instructions {
+            background-color: var(--dark-blue);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        
+        .instructions h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .instructions ol {
+            padding-left: 1.5rem;
+        }
+        
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 600px) {
+            .emergency-container {
+                margin-top: 4rem;
+                padding: 0.5rem;
+            }
+            
+            .emergency-header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .call-button {
+                font-size: 1.2rem;
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="emergency-header">
+        <h1><i class="fas fa-cross"></i> EMERGENCY ASSISTANCE</h1>
+    </header>
+    
+    <div class="emergency-container">
+        <a href="templates/ambu_track.html" class="call-button">
+            <i class="fas fa-ambulance"></i> CALL AMBULANCE NOW
+        </a>
+        
+        <div class="emergency-card">
+            <h2><i class="fas fa-phone-alt"></i> EMERGENCY CONTACTS</h2>
+            <ul class="emergency-list">
+                <li><i class="fas fa-ambulance"></i> <strong>Ambulance:</strong> 108 (Toll-free)</li>
+                <li><i class="fas fa-hospital"></i> <strong>Emergency Department:</strong> +91 98765 43210</li>
+                <li><i class="fas fa-first-aid"></i> <strong>Poison Control:</strong> +91 98765 43211</li>
+                <li><i class="fas fa-heartbeat"></i> <strong>Cardiac Emergency:</strong> +91 98765 43212</li>
+            </ul>
+        </div>
+        
+        <div class="emergency-card">
+            <h2><i class="fas fa-map-marker-alt"></i> HOSPITAL LOCATION</h2>
+            <ul class="emergency-list">
+                <li><i class="fas fa-location-arrow"></i> <strong>Address:</strong> 123 Emergency Lane, Medical City, 560001</li>
+                <li><i class="fas fa-clock"></i> <strong>Emergency Dept. Open:</strong> 24/7</li>
+                <li><i class="fas fa-directions"></i> <strong>Get Directions:</strong> <a href="#">Open in Maps</a></li>
+            </ul>
+        </div>
+        
+        <div class="instructions">
+            <h2><i class="fas fa-info-circle"></i> IN CASE OF EMERGENCY:</h2>
+            <ol>
+                <li>Call ambulance immediately using button above</li>
+                <li>State your location clearly</li>
+                <li>Describe the emergency situation</li>
+                <li>Follow instructions from operator</li>
+                <li>Do not hang up until help arrives</li>
+            </ol>
+        </div>
+    </div>
+    
+    <a href="templates/ambu_track.html" class="floating-button" title="Emergency Ambulance">
+        <i class="fas fa-plus"></i>
+    </a>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Tour - HospitalCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- A-Frame for 360 View -->
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+</head>
+<body>
+    <section>
+        <div class="container">
+            <div class="section-title">
+                <h2>Immersive 360° Tour</h2>
+                <p>Explore our hospital surroundings with this interactive virtual experience</p>
+            </div>
+            <div class="vr-container">
+                <a-scene>
+                    <a-sky src="images/360-view.jpg"></a-sky>
+                </a-scene>
+                <div class="vr-overlay">
+                    <i class="fas fa-vr-cardboard"></i> Drag to look around
+                </div>
+            </div>
+        </div>
+    </section>
+</body>    

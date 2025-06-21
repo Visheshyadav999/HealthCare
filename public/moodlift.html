@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cheer Up Chatbot</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f5f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 60px;
+    }
+    .chat-container {
+      width: 400px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .chat-box {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    .message {
+      margin: 10px 0;
+    }
+    .user {
+      text-align: right;
+      color: #2b2d42;
+    }
+    .bot {
+      text-align: left;
+      color: #0077b6;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px;
+      border: none;
+      background: #00b4d8;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0077b6;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h3>Talk to your AI Friend 😊</h3>
+    <div class="chat-box" id="chatBox"></div>
+    <input type="text" id="messageInput" placeholder="Feeling down? Let's talk...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    function sendMessage() {
+      const input = document.getElementById("messageInput");
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      const chatBox = document.getElementById("chatBox");
+      chatBox.innerHTML += `<div class="message user"><strong>You:</strong> ${msg}</div>`;
+      input.value = "";
+
+      fetch("http://127.0.0.1:5000/mood_chat", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ message: msg })
+      })
+      .then(res => res.json())
+      .then(data => {
+        chatBox.innerHTML += `<div class="message bot"><strong>Bot:</strong> ${data.response}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Form</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2b2d42;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            transform: perspective(1000px);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .container:hover {
+            transform: perspective(1000px) rotateY(2deg) rotateX(1deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            text-align: center;
+            color: #00b4d8;
+            font-size: 28px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        label {
+            font-size: 14px;
+            color: #4a4e69;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"], input[type="email"], input[type="date"], input[type="time"], select {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+        }
+
+        input[type="text"]:focus, 
+        input[type="email"]:focus, 
+        input[type="date"]:focus, 
+        input[type="time"]:focus, 
+        select:focus {
+            border-color: #00b4d8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.2);
+            background-color: white;
+        }
+
+        button {
+            background: linear-gradient(45deg, #00b4d8, #0077b6);
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #0077b6, #00b4d8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 180, 216, 0.4);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Popup Styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: scale(0.9);
+            opacity: 0;
+            animation: popupIn 0.4s forwards;
+        }
+
+        @keyframes popupIn {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .popup h3 {
+            color: #00b4d8;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .popup p {
+            color: #4a4e69;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .popup-close {
+            background: linear-gradient(45deg, #ff6d00, #ff9e00);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .popup-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 109, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Fill Require details</h2>
+        <form id="appointmentForm" action="http://127.0.0.1:5000/book_ambulance" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <button type="button" id="ambulanceBtn">Ambulance</button>
+        </form>
+    </div>
+
+    <!-- Popup HTML -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <h3>Ambulance Tracking</h3>
+            <p>Ambulance live tracking sent to your email</p>
+            <button class="popup-close" onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('ambulanceBtn').addEventListener('click', function() {
+            // First validate the form
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            
+            if (name && email) {
+                // Show popup
+                document.getElementById('popup').style.display = 'flex';
+                
+                // Submit the form after a delay (so user sees the message)
+                setTimeout(() => {
+                    document.getElementById('appointmentForm').submit();
+                }, 2000);
+            } else {
+                alert('Please fill in all fields');
+            }
+        });
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

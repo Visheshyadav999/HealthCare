@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - HospitalCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0d47a1;
+            --secondary: #1976d2;
+            --accent: #4caf50;
+            --light: #f5f9ff;
+            --dark: #2c3e50;
+            --text: #333;
+            --white: #ffffff;
+            --error: #e53935;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .hero {
+            background: linear-gradient(rgba(13, 71, 161, 0.8), rgba(13, 71, 161, 0.8)), 
+                        url('images/pharmacy-bg.jpg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 4rem 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Main Content */
+        .checkout-container {
+            max-width: 1000px;
+            margin: 0 auto 3rem;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Form Styling */
+        .checkout-form {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .checkout-form h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Payment Section */
+        .payment-methods {
+            margin-top: 2rem;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-option:hover {
+            border-color: var(--primary);
+        }
+        
+        .payment-option input {
+            margin-right: 1rem;
+        }
+        
+        .payment-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--primary);
+        }
+        
+        /* Order Summary */
+        .order-summary {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .order-summary h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .order-items {
+            margin-bottom: 1.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-total {
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 1rem 0;
+            border-top: 2px solid var(--primary);
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+            margin-top: 1rem;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3e8e41;
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--accent);
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <h1><i class="fas fa-credit-card"></i> Checkout</h1>
+        <p>Complete your order with secure payment</p>
+    </section>
+
+    <div class="checkout-container">
+        <div class="checkout-form">
+            <h2><i class="fas fa-user-circle"></i> Personal Information</h2>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact">Contact Number</label>
+                    <input type="tel" id="contact" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Delivery Address</label>
+                    <textarea id="address" required></textarea>
+                </div>
+                
+                <h2 class="payment-header"><i class="fas fa-wallet"></i> Payment Method</h2>
+                <div class="payment-methods">
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="credit" checked>
+                        <i class="fas fa-credit-card payment-icon"></i>
+                        <div>
+                            <div>Credit/Debit Card</div>
+                            <small>Pay with Visa, Mastercard, etc.</small>
+                        </div>
+                    </label>
+                    
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="paypal">
+                        <i class="fab fa-cc-paypal payment-icon"></i>
+                        <div>PayPal</div>
+                    </label>
+                    
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="upi">
+                        <i class="fas fa-mobile-alt payment-icon"></i>
+                        <div>UPI Payment</div>
+                    </label>
+                    
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="cod">
+                        <i class="fas fa-money-bill-wave payment-icon"></i>
+                        <div>Cash on Delivery</div>
+                    </label>
+                </div>
+                
+                <button type="button" class="btn btn-primary" onclick="placeOrder()">
+                    <i class="fas fa-shopping-bag"></i> Place Order
+                </button>
+            </form>
+        </div>
+        
+        <div class="order-summary">
+            <h2><i class="fas fa-receipt"></i> Order Summary</h2>
+            <div class="order-items" id="order-items">
+                <!-- Items will be populated by JavaScript -->
+            </div>
+            <div class="order-total">
+                <span>Total:</span>
+                <span id="order-total">$0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <footer>
+        <p>&copy; Designed and created by : Vishesh Yadav</p>
+    </footer>
+
+    <script>
+        // Load cart items and display in order summary
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const orderItemsContainer = document.getElementById("order-items");
+        const orderTotalElement = document.getElementById("order-total");
+        const notification = document.getElementById("notification");
+        
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        function renderOrderSummary() {
+            orderItemsContainer.innerHTML = "";
+            let total = 0;
+            
+            if (cart.length === 0) {
+                orderItemsContainer.innerHTML = "<p>Your cart is empty</p>";
+                return;
+            }
+            
+            cart.forEach(item => {
+                total += item.price;
+                const itemElement = document.createElement("div");
+                itemElement.className = "order-item";
+                itemElement.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>$${item.price.toFixed(2)}</span>
+                `;
+                orderItemsContainer.appendChild(itemElement);
+            });
+            
+            orderTotalElement.textContent = `$${total.toFixed(2)}`;
+        }
+        
+        function placeOrder() {
+            // Validate form
+            const name = document.getElementById("name").value;
+            const contact = document.getElementById("contact").value;
+            const email = document.getElementById("email").value;
+            const address = document.getElementById("address").value;
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            
+            if (!name || !contact || !email || !address) {
+                showNotification("Please fill in all required fields");
+                return;
+            }
+            
+            // In a real app, you would send this data to your backend
+            const orderData = {
+                customer: { name, contact, email, address },
+                paymentMethod,
+                items: cart,
+                total: cart.reduce((sum, item) => sum + item.price, 0)
+            };
+            
+            console.log("Order placed:", orderData);
+            
+            // Show success message
+            showNotification("Order placed successfully!");
+            
+            // Clear cart and redirect
+            setTimeout(() => {
+                localStorage.removeItem("cart");
+                window.location.href = "index.html";
+            }, 1500);
+        }
+        
+        // Initialize the page
+        window.onload = renderOrderSummary;
+    </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Form - HospitalCare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0d47a1;
+            --secondary: #1976d2;
+            --accent: #4caf50;
+            --light: #f5f9ff;
+            --dark: #2c3e50;
+            --text: #333;
+            --white: #ffffff;
+            --error: #e53935;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .container {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 550px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+        
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e3e7;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--white);
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
+        }
+        
+        input[type="date"], input[type="time"] {
+            padding: 0.7rem 1rem;
+        }
+        
+        .icon-input {
+            position: relative;
+        }
+        
+        .icon-input i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 1rem;
+        }
+        
+        button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #0b3d8a, #1565c0);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 71, 161, 0.3);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fas fa-calendar-alt"></i> Book an Appointment</h2>
+        <form action="http://127.0.0.1:5000/book_appointment" method="POST">
+            <div class="form-group icon-input">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                <i class="fas fa-user"></i>
+            </div>
+
+            <div class="form-group icon-input">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <i class="fas fa-envelope"></i>
+            </div>
+
+            <div class="form-group icon-input">
+                <label for="doctor">Select Doctor</label>
+                <select id="doctor" name="doctor" required>
+                    <option value="" disabled selected>Choose a doctor</option>
+                    <option value="Dr. Sarah Johnson">Dr. Sarah Johnson - Cardiology</option>
+                    <option value="Dr. David Lee">Dr. David Lee - Orthopedics</option>
+                    <option value="Dr. Priya Sharma">Dr. Priya Sharma - Dermatology</option>
+                    <option value="Dr. Ahmed Khan">Dr. Ahmed Khan - Pediatrics</option>
+                </select>
+                <i class="fas fa-user-md"></i>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Appointment Date</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time">Preferred Time</label>
+                <input type="time" id="time" name="time" required>
+            </div>
+
+            <button type="submit">
+                <i class="fas fa-calendar-check"></i> Book Appointment
+            </button>
+        </form>
+        
+        <div class="form-footer">
+            Need help? <a href="#">Contact our support team</a>
+        </div>
+    </div>
+    
+</body>
+</html>

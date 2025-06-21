@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+      <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 1rem 5%;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .floating-button {
+            
+            background-color: var(--emergency-red);
+            color: rgb(214, 17, 17);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 20px rgba(230, 57, 70, 0.6);
+            z-index: 99;
+            animation: pulse 1.5s infinite;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--secondary);
+            font-weight: 800;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        button, .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        button.primary, .btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        button.primary:hover, .btn.primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        button.secondary, .btn.secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        button.secondary:hover, .btn.secondary:hover {
+            background-color: #0d9f6e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        button.accent, .btn.accent {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        button.accent:hover, .btn.accent:hover {
+            background-color: #e69009;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .marquee {
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+
+        /* Hero Section */
+       .hero {
+        position: relative;
+        height: 39vh;
+        min-height: 400px;
+        overflow: hidden;
+        color: #fff;
+        display: flex;
+        align-items: center;
+    }
+    
+    .hero-media {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    
+    .hero-video,
+    .hero-image-fallback {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .media-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        background: linear-gradient(135deg, rgba(0, 119, 182, 0.8) 0%, rgba(0, 180, 216, 0.6) 100%);
+        z-index: 2;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        padding: 0 20px;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .hero-badge {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        display: inline-block;
+        padding: 8px 20px;
+        border-radius: 50px;
+        margin-bottom: 20px;
+        animation: fadeInUp 0.8s ease;
+    }
+    
+    .hero-badge span {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        line-height: 1.2;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.8s ease 0.2s both;
+    }
+    
+    .typed-text {
+        border-right: 2px solid #fff;
+        animation: blink 0.7s infinite;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem;
+        max-width: 600px;
+        margin-bottom: 30px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.8s ease 0.4s both;
+    }
+    
+    .hero-actions {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 40px;
+        animation: fadeInUp 0.8s ease 0.6s both;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn i {
+        margin-right: 8px;
+    }
+    
+    .btn-primary {
+        background: #fff;
+        color: #0077b6;
+    }
+    
+    .btn-primary:hover {
+        background: #f8f9fa;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-secondary {
+        background: transparent;
+        color: #fff;
+        border: 2px solid #fff;
+    }
+    
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .hero-stats {
+        display: flex;
+        gap: 30px;
+        animation: fadeInUp 0.8s ease 0.8s both;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+    
+    .scroll-down {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
+        animation: bounce 2s infinite;
+    }
+    
+    .scroll-down span {
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-bottom: 2px solid #fff;
+        border-right: 2px solid #fff;
+        transform: rotate(45deg);
+        margin: -5px;
+        animation: scrollDown 1.5s infinite;
+    }
+    
+    .scroll-down span:nth-child(2) {
+        animation-delay: -0.2s;
+    }
+    
+    .scroll-down span:nth-child(3) {
+        animation-delay: -0.4s;
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+        40% { transform: translateY(-20px) translateX(-50%); }
+        60% { transform: translateY(-10px) translateX(-50%); }
+    }
+    
+    @keyframes scrollDown {
+        0% {
+            opacity: 0;
+            transform: rotate(45deg) translate(-10px, -10px);
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            transform: rotate(45deg) translate(10px, 10px);
+        }
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+        .hero-title {
+            font-size: 3rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .hero {
+            min-height: 400px;
+        }
+        
+        .hero-title {
+            font-size: 2.2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+        
+        .hero-actions {
+            flex-direction: column;
+        }
+        
+        .hero-stats {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+
+        /* Services Section */
+        #services {
+            padding: 5rem 5%;
+            background-color: white;
+        }
+
+        #services h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+        }
+
+        .service-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-light);
+        }
+
+        .service-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover .service-image {
+            transform: scale(1.05);
+        }
+
+        .service-card-content {
+            padding: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+
+        .service-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card .btn {
+            width: 100%;
+        }
+
+        /* About Section */
+        #about {
+            padding: 5rem 5%;
+            background-color: #f8fafc;
+        }
+
+        #about h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+        }
+
+        .about-container {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-image {
+            width: 50%;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .about-image:hover {
+            transform: scale(1.02);
+        }
+
+        .about-container p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--dark);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .modal input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .modal .close-btn {
+            background-color: var(--gray);
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .modal .close-btn:hover {
+            background-color: #64748b;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2.5rem;
+        }
+
+        footer p {
+            font-size: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .about-container {
+                flex-direction: column;
+            }
+            .about-image {
+                width: 100%;
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            .hero-text p {
+                font-size: 1.2rem;
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+         #about {
+            padding: 5rem 5%;
+            background-color: #f8fafc;
+            position: relative;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .about-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .about-header .subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        .about-container {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+        }
+
+        .about-image-container {
+            position: relative;
+            width: 50%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover {
+            transform: scale(1.03);
+        }
+
+        .image-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .about-content {
+            width: 50%;
+        }
+
+        .about-content h3 {
+            color: var(--primary-dark);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.5rem;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: white;
+            padding: 1.5rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .values-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .values-section h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .value-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+       
+
+        /* Timeline */
+        .timeline-section {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 3rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .timeline-section h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 50px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary-light);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .year {
+            position: absolute;
+            left: -50px;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            box-shadow: 0 0 0 4px white, 0 0 0 6px var(--primary);
+        }
+
+        .event {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .event::before {
+            content: '';
+            position: absolute;
+            left: -16px;
+            top: 20px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 16px solid white;
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 3rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .testimonials-section h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
+        .testimonial-carousel {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .testimonial blockquote {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .testimonial blockquote::before,
+        .testimonial blockquote::after {
+            content: '"';
+            font-size: 2rem;
+            color: var(--primary-light);
+            opacity: 0.3;
+            position: absolute;
+        }
+
+        .testimonial blockquote::before {
+            top: -15px;
+            left: -10px;
+        }
+
+        .testimonial blockquote::after {
+            bottom: -25px;
+            right: -10px;
+        }
+
+        .patient {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+       
+
+        /* Location Map */
+        .location-section {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 3rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .location-section h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
+        .location-map {
+            height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .location-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .about-container {
+                flex-direction: column;
+            }
+            .about-image-container, 
+            .about-content {
+                width: 100%;
+            }
+            
+            .about-video {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .about-video {
+                height: 300px;
+            }
+            
+            .video-overlay h3 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Health<span>Care</span></div>
+        <a href="templates/ambu_track.html" class="floating-button" title="Emergency Ambulance">
+        <i class="fas fa-plus"></i>
+        </a>
+        <nav>
+            <nav class="main-nav">
+        <button class="nav-btn" onclick="document.getElementById('services').scrollIntoView({behavior: 'smooth'})">
+            <i class="fas fa-medkit"></i> Services
+        </button>
+        <button class="nav-btn" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+            <i class="fas fa-info-circle"></i> About
+        </button>
+        <button class="nav-btn login-btn" id="loginBtn">
+            <i class="fas fa-user"></i> Login
+        </button>
+        </nav>
+        </nav>
+
+    </header>
+    
+    <section id="login-prompt" class="hero">
+         <div class="hero-media">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-medical-team-in-a-hospital-40757-large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-image-fallback" style="background-image: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+        <div class="media-overlay"></div>
+    </div>
+    
+    <!-- Hero Content -->
+    <div class="hero-content">
+        <div class="container">
+            <!-- Badge/Tag -->
+            <div class="hero-badge">
+                <span>24/7 Emergency Services</span>
+            </div>
+            
+            <!-- Main Heading with Typing Animation -->
+            <h1 class="hero-title">
+                <span class="typed-text">Advanced Healthcare</span>
+                <span class="cursor">&nbsp;</span>
+            </h1>
+            
+            <!-- Subtitle -->
+            <p class="hero-subtitle">Compassionate care with cutting-edge technology in Noida</p>
+            
+            <!-- Call-to-Action Buttons -->
+            <div class="hero-actions">
+                <a href="templates/appointment_form.html" class="btn btn-primary">
+                    <i class="fas fa-calendar-alt"></i> Book Appointment
+                </a>
+                <a href="tel:+911234567890" class="btn btn-secondary">
+                    <i class="fas fa-phone-alt"></i> Emergency Call
+                </a>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- Scroll Down Indicator -->
+    <a href="#services" class="scroll-down">
+        <span></span>
+        <span></span>
+        <span></span>
+    </a>
+    </section>
+    <script>
+    // Typing Animation
+    document.addEventListener('DOMContentLoaded', function() {
+        const typedTextSpan = document.querySelector('.typed-text');
+        const cursorSpan = document.querySelector('.cursor');
+        
+        const textArray = ["Advanced Healthcare", "Compassionate Care", "Medical Excellence", "Your Health Partner"];
+        const typingDelay = 100;
+        const erasingDelay = 50;
+        const newTextDelay = 1500;
+        let textArrayIndex = 0;
+        let charIndex = 0;
+        
+        function type() {
+            if (charIndex < textArray[textArrayIndex].length) {
+                typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, typingDelay);
+            } 
+            else {
+                setTimeout(erase, newTextDelay);
+            }
+        }
+        
+        function erase() {
+            if (charIndex > 0) {
+                typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex-1);
+                charIndex--;
+                setTimeout(erase, erasingDelay);
+            } 
+            else {
+                textArrayIndex++;
+                if(textArrayIndex>=textArray.length) textArrayIndex=0;
+                setTimeout(type, typingDelay + 500);
+            }
+        }
+        
+        // Start animation
+        if(textArray.length) setTimeout(type, 1000);
+    });
+    
+</script>
+    
+    <section id="services">
+        <h2>Your Care Options</h2>
+        
+        <div class="service-container">
+            
+            <div class="service-card">
+                <img src="images/appointment.jpg" alt="Appointment" class="service-image">
+                <h3>Appointment</h3>
+                <p>Consult with top doctors across various specialties.</p>
+                <a href="outpatient.html" class="btn">View Doctors</a>
+            </div>
+            <div class="service-card">
+                <img src="images/pharmacy.jpg" alt="Pharmacy" class="service-image">
+                <h3>Pharmacy</h3>
+                <p>Fully stocked pharmacy with a range of medicines.</p>
+                <a href="pharmacy.html" class="btn">Shop Medicines</a>
+            </div>
+            <div class="service-card">
+                <img src="images/chat.jpg" alt="Health Records" class="service-image">
+                <h3>AI</h3>
+                <p>AI assistant(find your solution and test your symptoms)
+                </p>
+                <br>
+                <a href="chatbot.html" class="btn">Chat</a>
+            </div>
+            <div class="service-card">
+                <img src="images/health-records.jpg" alt="Health Records" class="service-image">
+                <h3>Report Analyse</h3>
+                <p>Read and Analyse your medical records securely from anywhere.</p>
+                <a href="templates/login.html" class="btn">View Records </a>
+            </div>
+            <div class="service-card">
+                <img src="images/virtual-tour.jpg" alt="Virtual Tour" class="service-image">
+                <h3>Virtual Tour</h3>
+                <p>Explore our hospital with photos and a 360-degree tour.</p>
+                <a href="virtual-tour.html" class="btn">Take a Tour</a>
+            </div>
+            <div class="service-card">
+                <img src="images/feel.webp" alt="HealMate" class="service-image">
+                <h3>HealMate</h3>
+                <p>A friendly companion for your health and happiness.</p>
+                <a href="moodlift.html" class="btn">Chat </a>
+            </div>
+            
+            <div class="service-card">
+                <img src="images/emergency-care.jpg" alt="Emergency Care" class="service-image">
+                <h3>Emergency Care</h3>
+                <p>24/7 emergency services with advanced medical facilities.</p>
+                <a href="emergency-care.html" class="btn">Learn More</a>
+            </div>
+        </div>
+    </section>
+    
+    <section id="about">
+         <section id="about">
+        <div class="about-header">
+            <h2>Our Story</h2>
+            <p class="subtitle">Compassionate care since 2010</p>
+        </div>
+        
+        <div class="about-container">
+            <div class="about-image-container">
+                <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Our Hospital" class="about-image">
+                <div class="image-caption">Our state-of-the-art facility</div>
+            </div>
+            
+            <div class="about-content">
+                <h3>Who We Are</h3>
+                <p>At HealthCare, we've been providing exceptional medical services for over a decade. What began as a small clinic has grown into a comprehensive healthcare institution serving thousands of patients annually.</p>
+                
+                <h3>Our Mission</h3>
+                <p>To deliver compassionate, innovative healthcare that improves lives through excellence in clinical practice, education, and research while maintaining the highest ethical standards.</p>
+                
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="50">0</span>+
+                        <span class="stat-label">Specialists</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="10000">0</span>+
+                        <span class="stat-label">Patients Served</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="24">0</span>/7
+                        <span class="stat-label">Emergency Care</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="values-section">
+            <h3>Our Core Values</h3>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">❤️</div>
+                    <h4>Compassion</h4>
+                    <p>Treating every patient with empathy and understanding</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🏆</div>
+                    <h4>Excellence</h4>
+                    <p>Delivering the highest standard of care</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🔬</div>
+                    <h4>Innovation</h4>
+                    <p>Embracing cutting-edge medical technologies</p>
+                </div>
+            </div>
+        </div>
+        
+       
+        
+        <div class="timeline-section">
+            <h3>Our Journey</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">2010</div>
+                    <div class="event">Founded with 5 staff members in a small clinic setting</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2015</div>
+                    <div class="event">Expanded to new 50,000 sq. ft. facility with emergency services</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2018</div>
+                    <div class="event">Achieved Joint Commission accreditation for quality care</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2022</div>
+                    <div class="event">Launched telemedicine services and mobile health initiatives</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="testimonials-section">
+            <h3>Patient Stories</h3>
+            <div class="testimonial-carousel">
+                <div class="testimonial">
+                    <blockquote>The care I received at HealthCare was exceptional. From the moment I walked in, I felt valued as a patient. The doctors took time to explain everything and the nurses were incredibly attentive.</blockquote>
+                    <div class="patient">- John D.</div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="location-section">
+            <h3>Our Location</h3>
+            <div class="location-map">
+                <iframe  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3507.123456789012!2d77.32745678901234!3d28.56789123456789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x123456789abcdef!2sKelash%20Hospital!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin"  allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            statNumbers.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-count'));
+                const duration = 2000; 
+                const step = target / (duration / 16); 
+                
+                let current = 0;
+                const increment = () => {
+                    current += step;
+                    if (current < target) {
+                        stat.textContent = Math.floor(current);
+                        requestAnimationFrame(increment);
+                    } else {
+                        stat.textContent = target + (stat.textContent.includes('+') ? '+' : '');
+                    }
+                };
+                
+                const observer = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) {
+                        increment();
+                        observer.unobserve(stat);
+                    }
+                });
+                
+                observer.observe(stat);
+            });
+        }
+
+        function setupTestimonialCarousel() {
+            const testimonials = [
+                {
+                    quote: "The care I received at HealthCare was exceptional. From the moment I walked in, I felt valued as a patient.",
+                    author: "- John D."
+                },
+                {
+                    quote: "After my surgery, the follow-up care was outstanding. I never felt like just another case number.",
+                    author: "- Maria G."
+                },
+                {
+                    quote: "The pediatric team made my child feel comfortable during what could have been a scary experience.",
+                    author: "- The Thompson Family"
+                }
+            ];
+            
+            const testimonialElement = document.querySelector('.testimonial');
+            const blockquote = testimonialElement.querySelector('blockquote');
+            const author = testimonialElement.querySelector('.patient');
+            
+            let currentIndex = 0;
+            
+            function rotateTestimonial() {
+                currentIndex = (currentIndex + 1) % testimonials.length;
+                blockquote.textContent = testimonials[currentIndex].quote;
+                author.textContent = testimonials[currentIndex].author;
+                
+                blockquote.style.animation = 'none';
+                void blockquote.offsetWidth; 
+                blockquote.style.animation = 'fadeIn 1s ease';
+            }
+            
+            setInterval(rotateTestimonial, 5000);
+        }
+
+        window.addEventListener('load', function() {
+            animateStats();
+            setupTestimonialCarousel();
+            
+            // Add fade-in animation for testimonial text
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .testimonial blockquote {
+                    animation: fadeIn 1s ease;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+    
+    <footer>
+        <p>&copy; Designed and created by : Vishesh Yadav .</p>
+    </footer>
+
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <h2>Sign Up</h2>
+            <input type="email" id="signup-email" placeholder="Enter your email">
+            <input type="password" id="signup-password" placeholder="Set a password">
+            <button onclick="signUp()">Sign Up</button>
+            <button class="close-btn" onclick="closeModal('signup')">Close</button>
+        </div>
+    </div>
+
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <h2>Login</h2>
+            <input type="email" id="login-email" placeholder="Enter your email">
+            <input type="password" id="login-password" placeholder="Enter your password">
+            <button onclick="login()">Login</button>
+            <button class="close-btn" onclick="closeModal('login')">Close</button>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
