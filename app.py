@@ -3,18 +3,12 @@ import base64
 import json
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, session
 from email.mime.text import MIMEText
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from google.auth.transport.requests import Request
-import google.generativeai as genai
 from werkzeug.utils import secure_filename
 from PIL import Image
 import pytesseract
 from flask_cors import CORS
-from dotenv import load_dotenv
-load_dotenv()
-
+import google.generativeai as genai
+import smtplib
 
 # --- Configuration ---
 app = Flask(__name__, template_folder='public/templates')
@@ -23,45 +17,28 @@ app.secret_key = 'your_secret_key'
 app.config['UPLOAD_FOLDER'] = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
+# Gemini setup
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-1.5-flash")
+
 # Allowed file check
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Gmail API Setup
-SCOPES = ['https://www.googleapis.com/auth/gmail.send']
-
-def authenticate_gmail():
-    creds = None
-    token_file = 'token.json'
-    if os.path.exists(token_file):
-        creds = Credentials.from_authorized_user_file(token_file, SCOPES)
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        with open(token_file, 'w') as token:
-            token.write(creds.to_json())
-    return build('gmail', 'v1', credentials=creds)
-
-def send_email(service, sender, to, subject, body):
-    message = MIMEText(body)
-    message['to'] = to
-    message['from'] = sender
-    message['subject'] = subject
-    raw_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
-    message_body = {'raw': raw_message}
+# SMTP Email sender (Gmail App Password)
+def send_email(sender_email, app_password, to_email, subject, body):
     try:
-        sent_message = service.users().messages().send(userId="me", body=message_body).execute()
-        print(f"Message sent: {sent_message['id']}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return f"Error: {str(e)}"
+        msg = MIMEText(body)
+        msg['Subject'] = subject
+        msg['From'] = sender_email
+        msg['To'] = to_email
 
-# Gemini setup
-genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-1.5-flash")
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(sender_email, app_password)
+            server.send_message(msg)
+        return "Email sent successfully"
+    except Exception as e:
+        return f"Error: {e}"
 
 # User Auth System
 def load_users():
@@ -74,7 +51,6 @@ def save_users(users):
     with open('users.json', 'w') as f:
         json.dump(users, f)
 
-# --- Routes ---
 @app.route('/')
 def home():
     return render_template("home.html")
@@ -173,9 +149,9 @@ def book_appointment():
         Best Regards,
         Your Healthcare Provider
         """
-        service = authenticate_gmail()
-        sender_email = 'your_email@gmail.com'
-        email_status = send_email(service, sender_email, email, subject, body)
+        sender_email = 'devilofmyownworld90@gmail.com'
+        app_password = os.getenv("EMAIL_APP_PASSWORD")
+        email_status = send_email(sender_email, app_password, email, subject, body)
         if "Error" in email_status:
             flash(f'Error sending email: {email_status}', 'error')
             return redirect(url_for('appointment_form'))
@@ -206,9 +182,9 @@ def book_ambulance():
         Best Regards,
         Your Healthcare Provider
         """
-        service = authenticate_gmail()
-        sender_email = 'your_email@gmail.com'
-        email_status = send_email(service, sender_email, email, subject, body)
+        sender_email = 'devilofmyownworld90@gmail.com'
+        app_password = os.getenv("EMAIL_APP_PASSWORD")
+        email_status = send_email(sender_email, app_password, email, subject, body)
         if "Error" in email_status:
             flash(f'Error sending email: {email_status}', 'error')
             return redirect(url_for('ambu_track'))
@@ -229,7 +205,6 @@ def chat():
         return jsonify({"response": response.text})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 @app.route("/moodlift")
 def mood_page():
