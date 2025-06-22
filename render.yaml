@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: healthcare
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    branch: main
+    autoDeploy: true
