@@ -274,7 +274,7 @@
         </div>
         
         <h2>Ambulance Booking</h2>
-        <form id="appointmentForm" action="http://127.0.0.1:5000/book_ambulance" method="POST">
+        <form id="appointmentForm" action="{{ url_for('ambu_track') }}" method="POST">
             <div class="form-group">
                 <label for="name">Full Name</label>
                 <input type="text" id="name" name="name" required placeholder="Enter your full name">
