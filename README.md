@@ -8,13 +8,6 @@ A modern, AI-powered healthcare platform built using **Flask**, **Gemini AI**, *
 
 ---
 
-## 📸 Screenshots
-
-| Home Page | Chatbot | Report Analysis |
-|-----------|---------|-----------------|
-| ![Home](screenshots/home.png) | ![Chatbot](screenshots/chatbot.png) | ![Report](screenshots/report.png) |
-
----
 
 ## ✨ Features
 
