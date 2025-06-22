@@ -1,12 +1,10 @@
 import os
 import base64
 import json
+import requests
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, session
 from email.mime.text import MIMEText
 from werkzeug.utils import secure_filename
-from PIL import Image
-import pytesseract
-pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 from flask_cors import CORS
 import google.generativeai as genai
 import smtplib
@@ -40,6 +38,20 @@ def send_email(sender_email, app_password, to_email, subject, body):
         return "Email sent successfully"
     except Exception as e:
         return f"Error: {e}"
+
+# OCR.Space API text extraction
+def extract_text_with_ocr_space(image_path, api_key):
+    with open(image_path, 'rb') as f:
+        response = requests.post(
+            'https://api.ocr.space/parse/image',
+            files={'filename': f},
+            data={
+                'apikey': api_key,
+                'language': 'eng'
+            },
+        )
+    result = response.json()
+    return result['ParsedResults'][0]['ParsedText'] if result['IsErroredOnProcessing'] == False else "OCR Failed"
 
 # User Auth System
 def load_users():
@@ -106,7 +118,11 @@ def upload():
             filename = secure_filename(file.filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(path)
-            text = pytesseract.image_to_string(Image.open(path))
+
+            # Use OCR.Space API instead of Tesseract
+            OCR_API_KEY = os.getenv("OCR_SPACE_API_KEY")
+            text = extract_text_with_ocr_space(path, OCR_API_KEY)
+
             prompt = f"""
             Analyze the following medical report and provide:
             - A summary in simple language
@@ -125,7 +141,6 @@ def upload():
 @app.route('/emer')
 def emer():
     return render_template('emer.html')
-
 
 @app.route('/doclist')
 def doclist():
@@ -173,8 +188,6 @@ def book_appointment():
 @app.route('/ambu_track')
 def ambu_track():
     return render_template('ambu_track.html')
-
-
 
 @app.route('/book_ambulance', methods=['POST'])
 def book_ambulance():
@@ -243,10 +256,7 @@ def mood_chat():
         return jsonify({"response": response.text.strip()})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
 
 if __name__ == '__main__':
     os.makedirs('uploads', exist_ok=True)
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
-
+    app.run(debug=True)
