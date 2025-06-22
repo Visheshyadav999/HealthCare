@@ -72,7 +72,7 @@
       chatBox.innerHTML += `<div class="message user"><strong>You:</strong> ${msg}</div>`;
       input.value = "";
 
-      fetch("http://127.0.0.1:5000/mood_chat", {
+      fetch("{{ url_for('mood_page') }}", {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ message: msg })
