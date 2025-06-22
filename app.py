@@ -6,6 +6,7 @@ from email.mime.text import MIMEText
 from werkzeug.utils import secure_filename
 from PIL import Image
 import pytesseract
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 from flask_cors import CORS
 import google.generativeai as genai
 import smtplib
@@ -173,7 +174,7 @@ def book_appointment():
 def ambu_track():
     return render_template('ambu_track.html')
 
-pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+
 
 @app.route('/book_ambulance', methods=['POST'])
 def book_ambulance():
