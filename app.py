@@ -173,6 +173,8 @@ def book_appointment():
 def ambu_track():
     return render_template('ambu_track.html')
 
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+
 @app.route('/book_ambulance', methods=['POST'])
 def book_ambulance():
     name = request.form.get('name')
