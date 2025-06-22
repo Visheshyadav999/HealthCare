@@ -185,7 +185,7 @@
     </header>
     
     <div class="emergency-container">
-        <a href="templates/ambu_track.html" class="call-button">
+        <a href="{{ url_for('ambu_track') }}" class="call-button">
             <i class="fas fa-ambulance"></i> CALL AMBULANCE NOW
         </a>
         
@@ -220,7 +220,7 @@
         </div>
     </div>
     
-    <a href="templates/ambu_track.html" class="floating-button" title="Emergency Ambulance">
+    <a href="{{ url_for('ambu_track') }}" class="floating-button" title="Emergency Ambulance">
         <i class="fas fa-plus"></i>
     </a>
 </body>

@@ -303,16 +303,13 @@
     </div>
 
     <script>
-        // Simple animation for social buttons
         document.querySelectorAll('.social-btn').forEach((btn, index) => {
             btn.style.animation = `fadeIn 0.5s ease-out ${index * 0.1 + 0.6}s both`;
         });
 
-        // Form submission handling (you can enhance this)
         document.querySelector('form').addEventListener('submit', function(e) {
             // Add your form validation here
             console.log('Form submitted');
-            // e.preventDefault(); // Uncomment to prevent default submission for AJAX
         });
     </script>
 </body>

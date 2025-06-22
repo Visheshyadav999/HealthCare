@@ -11,7 +11,7 @@ import google.generativeai as genai
 import smtplib
 
 # --- Configuration ---
-app = Flask(__name__, template_folder='public/templates')
+app = Flask(__name__, template_folder='templates')
 CORS(app)
 app.secret_key = 'your_secret_key'
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -121,6 +121,15 @@ def upload():
             flash('Only image files allowed (jpg, jpeg, png)')
     return render_template('upload.html')
 
+@app.route('/emer')
+def emer():
+    return render_template('emer.html')
+
+
+@app.route('/doclist')
+def doclist():
+    return render_template('doclist.html')
+
 @app.route('/appointment_form')
 def appointment_form():
     return render_template('appointment_form.html')
@@ -193,6 +202,10 @@ def book_ambulance():
         flash(f'Error: {str(e)}', 'error')
     return redirect(url_for('ambu_track'))
 
+@app.route("/chat")
+def chat_bot():
+    return render_template("chatbot.html")
+
 @app.route("/chat", methods=["POST"])
 def chat():
     user_input = request.json.get("message", "")
@@ -227,6 +240,8 @@ def mood_chat():
         return jsonify({"response": response.text.strip()})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+
 
 if __name__ == '__main__':
     os.makedirs('uploads', exist_ok=True)

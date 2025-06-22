@@ -977,7 +977,7 @@
 <body>
     <header>
         <div class="logo">Health<span>Care</span></div>
-        <a href="templates/ambu_track.html" class="floating-button" title="Emergency Ambulance">
+        <a href="{{ url_for('ambu_track') }}" class="floating-button" title="Emergency Ambulance">
         <i class="fas fa-plus"></i>
         </a>
         <nav>
@@ -1024,7 +1024,7 @@
             
             <!-- Call-to-Action Buttons -->
             <div class="hero-actions">
-                <a href="templates/appointment_form.html" class="btn btn-primary">
+                <a href="{{ url_for('appointment_form') }}" class="btn btn-primary">
                     <i class="fas fa-calendar-alt"></i> Book Appointment
                 </a>
                 <a href="tel:+911234567890" class="btn btn-secondary">
@@ -1091,49 +1091,50 @@
         <div class="service-container">
             
             <div class="service-card">
-                <img src="images/appointment.jpg" alt="Appointment" class="service-image">
+                <img src="{{ url_for('static', filename='images/appointment.jpg') }}" alt="Appointment" class="service-image">
                 <h3>Appointment</h3>
                 <p>Consult with top doctors across various specialties.</p>
-                <a href="outpatient.html" class="btn">View Doctors</a>
+                <a href="{{ url_for('doclist') }}" class="btn">View Doctors</a>
+
             </div>
             <div class="service-card">
-                <img src="images/pharmacy.jpg" alt="Pharmacy" class="service-image">
+                 <img src="{{ url_for('static', filename='images/pharmacy.jpg') }}" alt="Pharmacy" class="service-image">
                 <h3>Pharmacy</h3>
                 <p>Fully stocked pharmacy with a range of medicines.</p>
-                <a href="pharmacy.html" class="btn">Shop Medicines</a>
+                <a href="{{ url_for('static', filename='pages/pharmacy.html') }}" class="btn">Shop Medicines</a>
             </div>
             <div class="service-card">
-                <img src="images/chat.jpg" alt="Health Records" class="service-image">
+                <img src="{{ url_for('static', filename='images/chat.jpg') }}" alt="Health Records" class="service-image">
                 <h3>AI</h3>
                 <p>AI assistant(find your solution and test your symptoms)
                 </p>
                 <br>
-                <a href="chatbot.html" class="btn">Chat</a>
+                <a href="{{ url_for('chat_bot') }}" class="btn">Chat</a>
             </div>
             <div class="service-card">
-                <img src="images/health-records.jpg" alt="Health Records" class="service-image">
+                <img src="{{ url_for('static', filename='images/health-records.jpg') }}" alt="Health Records" class="service-image">
                 <h3>Report Analyse</h3>
                 <p>Read and Analyse your medical records securely from anywhere.</p>
-                <a href="templates/login.html" class="btn">View Records </a>
+                <a href="{{ url_for('login') }}" class="btn">View Records </a>
             </div>
             <div class="service-card">
-                <img src="images/virtual-tour.jpg" alt="Virtual Tour" class="service-image">
+                <img src="{{ url_for('static', filename='images/virtual-tour.jpg') }}" alt="Virtual Tour" class="service-image">
                 <h3>Virtual Tour</h3>
                 <p>Explore our hospital with photos and a 360-degree tour.</p>
-                <a href="virtual-tour.html" class="btn">Take a Tour</a>
+                <a href="{{ url_for('static', filename='pages/virtual-tour.html') }}" class="btn">Take a Tour</a>
             </div>
             <div class="service-card">
-                <img src="images/feel.webp" alt="HealMate" class="service-image">
+                <img src="{{ url_for('static', filename='images/feel.webp') }}" alt="HealMate" class="service-image">    
                 <h3>HealMate</h3>
                 <p>A friendly companion for your health and happiness.</p>
-                <a href="moodlift.html" class="btn">Chat </a>
+                <a href="{{ url_for('mood_page') }}" class="btn">Chat </a>
             </div>
             
             <div class="service-card">
-                <img src="images/emergency-care.jpg" alt="Emergency Care" class="service-image">
+                <img src="{{ url_for('static', filename='images/emergency-care.jpg') }}" alt="Emergency Care" class="service-image">
                 <h3>Emergency Care</h3>
                 <p>24/7 emergency services with advanced medical facilities.</p>
-                <a href="emergency-care.html" class="btn">Learn More</a>
+                <a href="{{ url_for('emer') }}" class="btn">Learn More</a>
             </div>
         </div>
     </section>

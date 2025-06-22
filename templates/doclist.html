@@ -26,7 +26,7 @@
         body {
             background-color: var(--light);
             color: var(--text);
-            line-height: 1.6;
+            line-height: 0.6;
         }
         
         .hero {
@@ -158,46 +158,46 @@
     <section>
         <div class="doctor-list">
             <div class="doctor-card">
-                <img src="images/doctor1.jpg" alt="Dr. Sarah Johnson" class="doctor-img">
+                <img src="{{ url_for('static', filename='images/doctor1.jpg') }}" alt="Dr. Sarah Johnson" class="doctor-img">
                 <div class="doctor-card-content">
                     <h3>Dr. Sarah Johnson</h3>
                     <p><strong>Specialization:</strong> Cardiology</p>
                     <p><strong>Experience:</strong> 12 years</p>
                     <p><strong>Education:</strong> MD, Cardiology</p>
-                    <a href="templates/appointment_form.html" class="btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+                    <a href="{{ url_for('appointment_form') }}" class="btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
                 </div>
             </div>
             
             <div class="doctor-card">
-                <img src="images/doctor2.jpg" alt="Dr. David Lee" class="doctor-img">
+                <img src="{{ url_for('static', filename='images/doctor2.jpg') }}" alt="Dr. Sarah Johnson" class="doctor-img">
                 <div class="doctor-card-content">
                     <h3>Dr. David Lee</h3>
                     <p><strong>Specialization:</strong> Orthopedics</p>
                     <p><strong>Experience:</strong> 15 years</p>
                     <p><strong>Education:</strong> MS, Orthopedic Surgery</p>
-                    <a href="templates/appointment_form.html" class="btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+                    <a href="{{ url_for('appointment_form') }}" class="btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
                 </div>
             </div>
             
             <div class="doctor-card">
-                <img src="images/doctor3.jpg" alt="Dr. Priya Sharma" class="doctor-img">
+                <img src="{{ url_for('static', filename='images/doctor3.jpg') }}" alt="Dr. Sarah Johnson" class="doctor-img">
                 <div class="doctor-card-content">
                     <h3>Dr. Priya Sharma</h3>
                     <p><strong>Specialization:</strong> Dermatology</p>
                     <p><strong>Experience:</strong> 8 years</p>
                     <p><strong>Education:</strong> MD, Dermatology</p>
-                    <a href="templates/appointment_form.html" class="btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+                    <a href="{{ url_for('appointment_form') }}" class="btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
                 </div>
             </div>
             
             <div class="doctor-card">
-                <img src="images/doctor4.jpg" alt="Dr. Ahmed Khan" class="doctor-img">
+                <img src="{{ url_for('static', filename='images/doctor4.jpg') }}" alt="Dr. Sarah Johnson" class="doctor-img">
                 <div class="doctor-card-content">
                     <h3>Dr. Ahmed Khan</h3>
                     <p><strong>Specialization:</strong> Pediatrics</p>
                     <p><strong>Experience:</strong> 10 years</p>
                     <p><strong>Education:</strong> MD, Pediatrics</p>
-                    <a href="templates/appointment_form.html" class="btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+                    <a href="{{ url_for('appointment_form') }}" class="btn"><i class="fas fa-calendar-check"></i> Book Appointment</a>
                 </div>
             </div>
         </div>
