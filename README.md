@@ -1,76 +1,88 @@
 
-# Healthcare Management System 🏥
+# 🏥 HealthCare Management System (Flask + Gemini + OCR + Email)
 
-This is a smart and user-friendly hospital management web application built using **Flask** and **Gemini AI**, offering features like:
-- ✅ Online appointment booking (with email confirmation)
-- 🧠 AI chatbot for mental well-being (MoodLift)
-- 🩺 AI-based symptom checker
-- 📄 Medical report analyzer using OCR + Gemini AI (Secure)
-- 🚑 Ambulance location tracker with email alert
-- 👩‍💼 Pharmacy
-- 🏥 Virtual view(360) of hospital
+A modern, AI-powered healthcare platform built using **Flask**, **Gemini AI**, **OCR.Space**, and **Render**. Users can book appointments, upload medical reports for AI analysis, and request ambulance services with live tracking.
+
+## 🔗 Live Demo  
+🌐 [Visit the Live Site](https://healthcare-9k9b.onrender.com)
 
 ---
 
-## 🚀 Tech Stack
+## 📸 Screenshots
 
-- **Frontend:** HTML, CSS, JavaScript
-- **Backend:** Python (Flask)
-- **APIs:** Gemini AI API, Google Gmail API
-- **Database:** JSON (file-based)
-- **Deployment:** Render
+| Home Page | Chatbot | Report Analysis |
+|-----------|---------|-----------------|
+| ![Home](screenshots/home.png) | ![Chatbot](screenshots/chatbot.png) | ![Report](screenshots/report.png) |
 
 ---
 
-## ⚙️ How to Run Locally
+## ✨ Features
 
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/Visheshyadav999/Healthcare.git
-   cd Healthcare
+- 🔐 **Signup & Login** System (Flask Sessions)
+- 🧾 **AI Medical Report Analysis** using OCR + Gemini AI
+- 🤖 **AI Chatbot for Symptom Check**
+- 📧 **Email Confirmations** on Appointment/Booking
+- 🩺 **Doctor Appointment Booking**
+- 🚑 **Ambulance Booking with Live Google Maps Location**
+- 😄 **MoodLifter Chatbot** for mental well-being
+-    **Pharmacy**
+
+---
+
+## ⚙️ Technologies Used
+
+| Backend        | Frontend    | APIs / Tools             |
+|----------------|-------------|---------------------------|
+| Flask (Python) | HTML, CSS   | Gemini API (Google AI)    |
+| Flask-Mail     | JavaScript  | OCR.Space API             |
+| Flask-CORS     | Bootstrap   | Gmail SMTP                |
+
+---
+
+## 🛠️ Setup Instructions (Local)
+
+1. **Clone this repository**
+   git clone https://github.com/Visheshyadav999/HealthCare.git
+   cd HealthCare
    ```
 
-2. **Set Up Environment Variables:**
-   Create a `.env` file in the root directory and add:
-   ```
-   GEMINI_API_KEY=your-gemini-api-key
+2. **Create a virtual environment**
+   python -m venv venv
+   source venv/bin/activate  # or venv\Scripts\activate on Windows
    ```
 
-3. **Install Dependencies:**
-   ```bash
+3. **Install dependencies**
    pip install -r requirements.txt
    ```
 
-4. **Run the Flask App:**
-   ```bash
+4. **Create `.env` file** and add:
+   GEMINI_API_KEY=your_google_gemini_key
+   EMAIL_APP_PASSWORD=your_gmail_app_password
+   OCR_API_KEY=your_ocr_space_api_key
+   ```
+
+5. **Run the app**
    python app.py
    ```
 
-5. **Visit:**
-   Open your browser and go to:
-   ```
-   http://127.0.0.1:5000
-   ```
-   or directly open the index file in browser
+---
+
+
+## 🧠 Future Enhancements
+
+- Admin dashboard to view appointments
+- Upload and manage full patient history
+- WhatsApp integration for alert messages
 
 ---
 
-## 🔐 Security Notes
+## 🙋‍♂️ Developed By
 
-- **DO NOT hardcode your Gemini/Gmail API keys** in `app.py`.
-- Use `.env` file and access with `os.getenv('GEMINI_API_KEY')` instead.
-- Make sure to include `.env` in your `.gitignore` file.
-
----
-
-## 🤝 Contributions
-
-Feel free to fork the project and submit a pull request!
+**Vishesh Yadav**  
+📫 [LinkedIn](https://www.linkedin.com/in/visheshyadav999/) | [GitHub](https://github.com/Visheshyadav999)
 
 ---
 
-## 📬 Contact
+## 📜 License
 
-Created by [Vishesh Yadav](https://github.com/Visheshyadav999)  
-Feel free to reach out for collaborations or queries!
-
+This project is licensed under the MIT License.
