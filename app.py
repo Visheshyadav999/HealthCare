@@ -238,6 +238,11 @@ def chat():
 @app.route("/moodlift")
 def mood_page():
     return render_template("moodlift.html")
+    
+@app.route('/health')
+def health():
+    return "OK", 200
+
 
 @app.route("/mood_chat", methods=["POST"])
 def mood_chat():
